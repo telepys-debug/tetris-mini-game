@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 const express = require('express');
 const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
 const path = require('path');
 
 const app = express();
@@ -11,268 +10,134 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../')));
 
-// Подключаем БД
-const db = new sqlite3.Database('./scores.db');
+// ====== ФАЙЛ ХРАНЕНИЯ ======
+const DATA_FILE = path.join(__dirname, 'scores.json');
 
-// Создаём таблицы
-db.run(`
-  CREATE TABLE IF NOT EXISTS scores (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    userId TEXT NOT NULL,
-    name TEXT NOT NULL,
-    score INTEGER NOT NULL,
-    lines INTEGER NOT NULL,
-    period TEXT NOT NULL,
-    timestamp INTEGER NOT NULL
-  )
-`);
+// ====== ПАМЯТЬ ======
+let scores = [];
 
-// Получить текущий часовой период
-function getCurrentPeriod() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  const hour = String(now.getHours()).padStart(2, '0');
-  return `${year}-${month}-${day} ${hour}:00`;
+// ====== ЗАГРУЗКА ДАННЫХ ======
+function loadData() {
+    try {
+        if (fs.existsSync(DATA_FILE)) {
+            const raw = fs.readFileSync(DATA_FILE);
+            scores = JSON.parse(raw);
+        }
+    } catch (e) {
+        console.log("Load error:", e);
+        scores = [];
+    }
 }
 
-// Сохранить результат
-app.post('/api/score', (req, res) => {
-  const { userId, name, score, lines, period } = req.body;
-  
-  if (!userId || !name || score === undefined) {
-    return res.status(400).json({ error: 'Missing data' });
-  }
-  
-  const finalPeriod = period || getCurrentPeriod();
-  const timestamp = Date.now();
-  
-  db.get(
-  `SELECT MAX(score) as best FROM scores WHERE userId = ? AND period = ?`,
-  [userId, finalPeriod],
-  (err, row) => {
-    if (row && row.best >= score) {
-      return res.json({ ok: true }); // хуже — не сохраняем
+// ====== СОХРАНЕНИЕ ======
+function saveData() {
+    try {
+        fs.writeFileSync(DATA_FILE, JSON.stringify(scores, null, 2));
+    } catch (e) {
+        console.log("Save error:", e);
     }
-
-    db.run(
-      `INSERT INTO scores (userId, name, score, lines, period, timestamp)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [userId, name, score, lines, finalPeriod, timestamp],
-      (err) => {
-        if (err) return res.status(500).json({ error: 'Database error' });
-        res.json({ ok: true });
-      }
-    );
-  }
-);
-});
-
-// Получить рейтинг за период
-app.get('/api/leaderboard', (req, res) => {
-  const period = req.query.period || getCurrentPeriod();
-  
-  db.all(
-    `SELECT userId, name, MAX(score) as score
-     FROM scores
-     WHERE period = ?
-     GROUP BY userId
-     ORDER BY score DESC
-     LIMIT 50`,
-    [period],
-    (err, rows) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Database error' });
-      }
-      res.json({ period, leaderboard: rows });
-    }
-  );
-});
-
-// Получить все доступные периоды
-app.get('/api/periods', (req, res) => {
-  db.all(
-    `SELECT DISTINCT period FROM scores ORDER BY period DESC`,
-    [],
-    (err, rows) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Database error' });
-      }
-      res.json(rows.map(r => r.period));
-    }
-  );
-});
-
-// Получить историю игрока
-app.get('/api/user-history/:userId', (req, res) => {
-  const { userId } = req.params;
-  
-  db.all(
-    `SELECT period, MAX(score) as bestScore
-     FROM scores
-     WHERE userId = ?
-     GROUP BY period
-     ORDER BY period DESC`,
-    [userId],
-    (err, rows) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Database error' });
-      }
-      res.json(rows);
-    }
-  );
-});
-
-// Очистка старых записей (раз в час, старше 24 часов)
-setInterval(() => {
-  const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
-  db.run(`DELETE FROM scores WHERE timestamp < ?`, [oneDayAgo]);
-}, 60 * 60 * 1000);
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Open http://localhost:${PORT}`);
-=======
-const express = require('express');
-const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
-
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, '../')));
-
-// Подключаем БД
-const db = new sqlite3.Database('./scores.db');
-
-// Создаём таблицы
-db.run(`
-  CREATE TABLE IF NOT EXISTS scores (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    userId TEXT NOT NULL,
-    name TEXT NOT NULL,
-    score INTEGER NOT NULL,
-    lines INTEGER NOT NULL,
-    period TEXT NOT NULL,
-    timestamp INTEGER NOT NULL
-  )
-`);
-
-// Получить текущий часовой период
-function getCurrentPeriod() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  const hour = String(now.getHours()).padStart(2, '0');
-  return `${year}-${month}-${day} ${hour}:00`;
 }
 
-// Сохранить результат
+loadData();
+
+// ====== ПЕРИОД ======
+function getCurrentPeriod() {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:00`;
+}
+
+// ====== СОХРАНЕНИЕ СКОРА ======
 app.post('/api/score', (req, res) => {
-  const { userId, name, score, lines, period } = req.body;
-  
-  if (!userId || !name || score === undefined) {
-    return res.status(400).json({ error: 'Missing data' });
-  }
-  
-  const finalPeriod = period || getCurrentPeriod();
-  const timestamp = Date.now();
-  
-  db.get(
-  `SELECT MAX(score) as best FROM scores WHERE userId = ? AND period = ?`,
-  [userId, finalPeriod],
-  (err, row) => {
-    if (row && row.best >= score) {
-      return res.json({ ok: true }); // хуже — не сохраняем
+    const { userId, name, score, lines, period } = req.body;
+
+    if (!userId || !name || typeof score !== 'number') {
+        return res.status(400).json({ error: 'Missing data' });
     }
 
-    db.run(
-      `INSERT INTO scores (userId, name, score, lines, period, timestamp)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [userId, name, score, lines, finalPeriod, timestamp],
-      (err) => {
-        if (err) return res.status(500).json({ error: 'Database error' });
-        res.json({ ok: true });
-      }
-    );
-  }
-);
+    const finalPeriod = period || getCurrentPeriod();
+
+    const existingBest = scores
+        .filter(s => s.userId === userId && s.period === finalPeriod)
+        .reduce((max, s) => Math.max(max, s.score), 0);
+
+    if (existingBest >= score) {
+        return res.json({ ok: true });
+    }
+
+    scores.push({
+        userId,
+        name,
+        score,
+        lines,
+        period: finalPeriod,
+        timestamp: Date.now()
+    });
+
+    saveData();
+
+    res.json({ ok: true });
 });
 
-// Получить рейтинг за период
+// ====== LEADERBOARD ======
 app.get('/api/leaderboard', (req, res) => {
-  const period = req.query.period || getCurrentPeriod();
-  
-  db.all(
-    `SELECT userId, name, MAX(score) as score
-     FROM scores
-     WHERE period = ?
-     GROUP BY userId
-     ORDER BY score DESC
-     LIMIT 50`,
-    [period],
-    (err, rows) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Database error' });
-      }
-      res.json({ period, leaderboard: rows });
-    }
-  );
+    const period = req.query.period || getCurrentPeriod();
+
+    const filtered = scores.filter(s => s.period === period);
+
+    const map = {};
+
+    filtered.forEach(s => {
+        if (!map[s.userId] || map[s.userId].score < s.score) {
+            map[s.userId] = s;
+        }
+    });
+
+    const leaderboard = Object.values(map)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 50)
+        .map(({ userId, name, score }) => ({
+            userId,
+            name,
+            score
+        }));
+
+    res.json({
+        period,
+        leaderboard
+    });
 });
 
-// Получить все доступные периоды
+// ====== PERIODS ======
 app.get('/api/periods', (req, res) => {
-  db.all(
-    `SELECT DISTINCT period FROM scores ORDER BY period DESC`,
-    [],
-    (err, rows) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Database error' });
-      }
-      res.json(rows.map(r => r.period));
-    }
-  );
+    const periods = [...new Set(scores.map(s => s.period))];
+    res.json(periods);
 });
 
-// Получить историю игрока
+// ====== HISTORY ======
 app.get('/api/user-history/:userId', (req, res) => {
-  const { userId } = req.params;
-  
-  db.all(
-    `SELECT period, MAX(score) as bestScore
-     FROM scores
-     WHERE userId = ?
-     GROUP BY period
-     ORDER BY period DESC`,
-    [userId],
-    (err, rows) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Database error' });
-      }
-      res.json(rows);
-    }
-  );
+    const { userId } = req.params;
+
+    const userScores = scores.filter(s => s.userId === userId);
+
+    const map = {};
+
+    userScores.forEach(s => {
+        if (!map[s.period] || map[s.period].score < s.score) {
+            map[s.period] = s;
+        }
+    });
+
+    res.json(Object.values(map));
 });
 
-// Очистка старых записей (раз в час, старше 24 часов)
+// ====== CLEANUP ======
 setInterval(() => {
-  const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
-  db.run(`DELETE FROM scores WHERE timestamp < ?`, [oneDayAgo]);
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    scores = scores.filter(s => s.timestamp > oneDayAgo);
+    saveData();
 }, 60 * 60 * 1000);
 
+// ====== START ======
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Open http://localhost:${PORT}`);
->>>>>>> 5ee62ab5ce7747634d305db11f4f8951a2cda230
+    console.log(`Server running on port ${PORT}`);
 });
