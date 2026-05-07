@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "name": "tetris-leaderboard",
   "version": "1.0.0",
@@ -7,20 +6,6 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "sqlite3": "^5.1.6"
+    "cors": "^2.8.5"
   }
-=======
-{
-  "name": "tetris-leaderboard",
-  "version": "1.0.0",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "sqlite3": "^5.1.6"
-  }
->>>>>>> 5ee62ab5ce7747634d305db11f4f8951a2cda230
 }
