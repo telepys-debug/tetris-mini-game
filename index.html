@@ -173,8 +173,8 @@
     canvas {
       display: block;
 
-      width: 180px;
-      height: 360px;
+      width: 240px;
+      height: 480px;
 
       margin: 0 auto;
 
@@ -356,6 +356,77 @@
       border: none;
       cursor: pointer;
     }
+
+    .game-overlay {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0,0,0,0.7);
+
+  z-index: 50;
+}
+
+#game-tab {
+  position: relative;
+}
+
+.game-modal {
+  width: 85%;
+  max-width: 300px;
+
+  background: #16213e;
+
+  border-radius: 24px;
+
+  padding: 24px;
+
+  text-align: center;
+
+  color: white;
+
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+}
+
+.game-modal h2 {
+  margin-bottom: 12px;
+}
+
+.game-modal p {
+  margin-bottom: 20px;
+  color: #dce9f5;
+}
+
+.game-modal button {
+  width: 100%;
+
+  border: none;
+
+  border-radius: 20px;
+
+  padding: 14px;
+
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+
+  color: white;
+
+  font-weight: bold;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+#final-score {
+  font-size: 42px;
+  font-weight: bold;
+  color: #00d9ff;
+
+  margin-bottom: 20px;
+}
   </style>
 </head>
 <body>
@@ -370,6 +441,25 @@
   <div id="rating-list" class="rating-list">Загрузка...</div>
 </div>
 
+<div id="start-overlay" class="game-overlay">
+  <div class="game-modal">
+    <h2>🎮 ТЕТРИС</h2>
+    <p>Построй инновации и набери максимум очков</p>
+    <button id="start-game-btn">НАЧАТЬ ИГРУ</button>
+  </div>
+</div>
+
+<div id="game-over-overlay" class="game-overlay" style="display:none;">
+  <div class="game-modal">
+    <h2>🏁 ИГРА ОКОНЧЕНА</h2>
+    
+    <p>Ваш счёт:</p>
+    <div id="final-score">0</div>
+
+    <button id="restart-game-btn">НОВАЯ ИГРА</button>
+  </div>
+</div>
+
   <!-- Игра -->
   <div id="game-tab" class="tab-content">
     <div class="title">🎮 ПОСТРОЙ ИННОВАЦИИ</div>
@@ -381,7 +471,6 @@
       <button class="control-btn" data-move="down">▼</button>
       <button class="control-btn" data-move="right">▶</button>
     </div>
-    <button id="start-game" class="start-btn">🔄 НОВАЯ ИГРА</button>
   </div>
 
   <!-- Профиль -->
