@@ -14,30 +14,48 @@
 
     body {
       margin: 0;
-      background: #1a1a2e;
+      padding: 0;
+      height: 100%;
       overflow: hidden;
-      height: 100vh;
+      background: #1a1a2e;
+
+      display: flex;
+      justify-content: center;
+
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+
+      overscroll-behavior: none;
     }
 
     .app {
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       height: 100vh;
+
       display: flex;
       flex-direction: column;
+
       background: #0f0f1a;
     }
 
     /* Табы */
     .tabs {
       position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
       bottom: 0;
-      max-width: 500px;
+
       width: 100%;
+      max-width: 520px;
+
       background: #16213e;
       display: flex;
       justify-content: space-around;
-      padding: 10px 0;
+
+      padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+
       border-top: 1px solid #0f3460;
       z-index: 100;
     }
@@ -71,9 +89,11 @@
     /* Контенты */
     .tab-content {
       flex: 1;
-      overflow: hidden;
       display: none;
-      padding: 12px;
+      flex-direction: column;
+      overflow: hidden;
+
+      padding: 12px 12px 90px 12px;
     }
 
     .tab-content.active {
@@ -153,15 +173,14 @@
       display: block;
       margin: 0 auto;
 
+      width: min(92vw, 260px);
+      aspect-ratio: 1 / 2;
+      height: auto;
+
       background: #0a0a15;
       border-radius: 16px;
 
       box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
-
-      width: min(92vw, 260px);
-      aspect-ratio: 1 / 2;
-      
-      height: auto;
       
       touch-action: none;
     }
@@ -177,7 +196,7 @@
     .controls {
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
       margin-top: auto;
       padding: 10px 0;
     }
