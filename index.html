@@ -17,6 +17,11 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
+
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      overflow-x: hidden;
     }
 
     .app {
@@ -25,7 +30,7 @@
       background: #0f0f1a;
       min-height: 100vh;
       position: relative;
-      padding-bottom: 70px;
+      padding-bottom: 90px;
     }
 
     /* Табы */
@@ -149,6 +154,11 @@
       background: #0a0a15;
       border-radius: 16px;
       box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      aspect-ratio: 1 / 2;
     }
 
     .score-board {
@@ -169,12 +179,14 @@
     .control-btn {
       background: #16213e;
       border: none;
-      width: 60px;
-      height: 60px;
+      width: 72px;
+      height: 72px;
       border-radius: 20px;
-      font-size: 24px;
+      font-size: 28px;
       cursor: pointer;
       color: white;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .control-btn:active {
@@ -365,6 +377,18 @@
     <button id="cancel-name-btn">Отмена</button>
   </div>
 </div>
+
+<script>
+document.addEventListener(
+  'touchmove',
+  function(e) {
+    if (e.scale !== 1) {
+      e.preventDefault();
+    }
+  },
+  { passive: false }
+);
+</script>
 
 <script src="tetris.js"></script>
 <script src="app.js"></script>
