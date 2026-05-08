@@ -151,14 +151,16 @@
     canvas {
       display: block;
       margin: 0 auto;
+
       background: #0a0a15;
       border-radius: 16px;
+
       box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
 
-      width: 100%;
-      max-width: 320px;
+      width: min(92vw, 320px);
       height: auto;
-      aspect-ratio: 1 / 2;
+      
+      touch-action: none;
     }
 
     .score-board {
@@ -332,7 +334,7 @@
   <div id="game-tab" class="tab-content">
     <div class="title">🎮 ПОСТРОЙ ИННОВАЦИИ</div>
     <div class="score-board">Счёт: <span id="score">0</span></div>
-    <canvas id="tetris-canvas" width="300" height="600"></canvas>
+    <canvas id="tetris-canvas" width="240" height="480"></canvas>
     <div class="controls">
       <button class="control-btn" data-move="left">◀</button>
       <button class="control-btn" data-move="rotate">🔄</button>
