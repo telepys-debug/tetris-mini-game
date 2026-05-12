@@ -123,6 +123,42 @@ function initUI() {
             startGame();
         });
     }
+    const editBtn = $('edit-name-btn');
+const modal = $('name-modal');
+
+const saveBtn = $('save-name-btn');
+const cancelBtn = $('cancel-name-btn');
+
+const input = $('new-name-input');
+
+if (editBtn && modal) {
+    editBtn.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        input.value = currentUser.name;
+    });
+}
+
+if (cancelBtn && modal) {
+    cancelBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+}
+
+if (saveBtn && input && modal) {
+    saveBtn.addEventListener('click', () => {
+
+        const newName = input.value.trim();
+
+        if (!newName) return;
+
+        currentUser.name = newName;
+
+        saveUser();
+        updateProfile();
+
+        modal.style.display = 'none';
+    });
+}
 }
 
     // tabs

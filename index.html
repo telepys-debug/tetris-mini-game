@@ -194,19 +194,20 @@
     }
 
     .controls {
-      position: fixed;
-      
-      bottom: calc(20px + env(safe-area-inset-bottom));
-      left: 50%;
-      transform: translateX(-50%);
-      
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding: 10px 0;
-      
-      z-index: 100;
+      .controls {
+        position: fixed;
+
+        left: 50%;
+        transform: translateX(-50%);
+
+        bottom: 90px;
+
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+
+        z-index: 90;
+      }
 }
 
     .control-btn {
@@ -367,14 +368,16 @@
 }
 
 .game-overlay {
+    .game-overlay {
     position: absolute;
 
-    top: 0;
     left: 50%;
     transform: translateX(-50%);
 
-    width: min(90vw, 300px);
-    height: min(calc(90vw * 2), 600px);
+    top: 72px;
+
+    width: 200px;
+    height: 400px;
 
     display: flex;
     justify-content: center;
@@ -382,11 +385,11 @@
 
     background: rgba(0,0,0,0.78);
 
-    z-index: 50;
-
     border-radius: 16px;
 
+    z-index: 50;
     animation: fadeIn 0.2s ease;
+}
 }
 
 @keyframes fadeIn {
@@ -451,7 +454,7 @@
     Счёт: <span id="score">0</span>
   </div>
 
-  <canvas id="tetris-canvas" width="240" height="480"></canvas>
+  <canvas id="tetris-canvas" width="200" height="400"></canvas>
 
   <!-- START SCREEN -->
   <div id="start-overlay" class="game-overlay">
