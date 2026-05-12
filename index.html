@@ -170,18 +170,17 @@
     /* Игра */
     canvas {
       display: block;
-
-      width: min(90vw, 300px);
-      height: auto;
-      
       margin: 0 auto;
+      width: 160px !important;
+      height: 320px !important;
+
+      image-rendering: pixelated;
+      touch-action: none;
       
       background: #0a0a15;
       border-radius: 16px;
       
       box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
-      
-      touch-action: none;
 }
 
     .score-board {
@@ -198,7 +197,7 @@
         left: 50%;
         transform: translateX(-50%);
 
-        bottom: 90px;
+        bottom: 140px;
 
         display: flex;
         justify-content: center;
@@ -226,13 +225,13 @@
 
     .start-btn {
       width: 100%;
-      padding: 14px;
+      padding: 10px;
       background: linear-gradient(135deg, #00b4d8, #0077b6);
       border: none;
       border-radius: 30px;
       color: white;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 14px;
       cursor: pointer;
       
       margin-top: 16px;
@@ -370,7 +369,7 @@
     left: 50%;
     transform: translateX(-50%);
 
-    top: 72px;
+    top: 120px;
 
     width: 200px;
     height: 400px;
@@ -410,6 +409,7 @@
 }
 
 .game-modal h2 {
+  font-size: 18px;
   margin-bottom: 14px;
 }
 
@@ -419,7 +419,7 @@
 }
 
 .final-score {
-  font-size: 42px;
+  font-size: 28px;
   font-weight: bold;
   color: #00d9ff;
 
