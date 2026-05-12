@@ -20,15 +20,15 @@
       overflow-y: auto;
       touch-action: manipulation;
       user-select: none;
-      overscroll-behavior: none;
     }
 
     .app {
       width: 100%;
       max-width: 520px;
-      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
       
       padding-top: env(safe-area-inset-top);
       padding-bottom: calc(90px + env(safe-area-inset-bottom));
@@ -91,7 +91,8 @@
     .tab-content {
       flex: 1;
       display: none;
-      flex-direction: column;
+      -webkit-overflow-scrolling: touch;
+
       overflow-y: auto;
       overflow-x: hidden;
 
