@@ -24,9 +24,9 @@ class Tetris {
         this.currentX = 3;
         this.currentY = 0;
         
-        this.cellSize = 20;
-        this.canvas.width = 200;
-        this.canvas.height = 400;
+        this.cellSize = 16;
+        this.canvas.width = 160;
+        this.canvas.height = 320;
 
         this.ctx.imageSmoothingEnabled = false;
         this.lockDelay = false;
@@ -161,7 +161,7 @@ class Tetris {
             const px = x * size;
             const py = y * size;
 
-            this.ctx.fillStyle = this.grid[y][x] ? '#00b4d8' : '#141428';
+            this.ctx.fillStyle = this.grid[y][x] ? '#a855f7' : '#141428';
             this.ctx.fillRect(px, py, size, size);
         }
     }
@@ -174,12 +174,30 @@ class Tetris {
                     const px = (this.currentX + x) * size;
                     const py = (this.currentY + y) * size;
 
-                    this.ctx.fillStyle = '#ff006e';
+                    this.ctx.fillStyle = '#c084fc';
                     this.ctx.fillRect(px, py, size, size);
                 }
             }
         }
+        
     }
+    // GRID LINES
+this.ctx.strokeStyle = '#1f1f35';
+this.ctx.lineWidth = 1;
+
+for (let y = 0; y <= 20; y++) {
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, y * size);
+    this.ctx.lineTo(10 * size, y * size);
+    this.ctx.stroke();
+}
+
+for (let x = 0; x <= 10; x++) {
+    this.ctx.beginPath();
+    this.ctx.moveTo(x * size, 0);
+    this.ctx.lineTo(x * size, 20 * size);
+    this.ctx.stroke();
+}
 }
     
     gameOver() {
