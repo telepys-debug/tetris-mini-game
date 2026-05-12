@@ -176,17 +176,31 @@ function initUI() {
     });
 
 // ================= GAME EVENTS =================
-function initGameEvents() {
-    window.addEventListener('gameEnd', async (e) => {
-        if (!e?.detail) return;
-        const { score, lines } = e.detail;
+window.addEventListener('gameEnd', async (e) => {
 
-        await sendScore(score, lines);
-        await loadLeaderboard();
+    if (!e.detail) return;
 
-        updateProfile();
-    });
-}
+    const { score, lines } = e.detail;
+
+    // сохранить результат
+    await sendScore(score, lines);
+
+    // обновить UI
+    await loadLeaderboard();
+    updateProfile();
+
+    // показать game over
+    const overlay = $('game-over-overlay');
+    const scoreEl = $('final-score');
+    const linesEl = $('final-lines');
+
+    if (scoreEl) scoreEl.innerText = score;
+    if (linesEl) linesEl.innerText = `Линий собрано: ${lines}`;
+
+    if (overlay) {
+        overlay.style.display = 'flex';
+    }
+});
 
 // ================= PROFILE =================
 function updateProfile() {
@@ -201,6 +215,43 @@ function updateProfile() {
     set('best-score', currentUser.bestScore);
     set('games-played', currentUser.gamesPlayed);
     set('total-score', currentUser.totalScore);
+    updateAchievements();
+}
+
+function updateAchievements() {
+
+    if (!currentUser) return;
+
+    const achievements = [];
+
+    if (currentUser.bestScore >= 100) {
+        achievements.push('🏅 100 очков');
+    }
+
+    if (currentUser.bestScore >= 500) {
+        achievements.push('🔥 500 очков');
+    }
+
+    if (currentUser.bestScore >= 1000) {
+        achievements.push('👑 1000 очков');
+    }
+
+    if (currentUser.gamesPlayed >= 5) {
+        achievements.push('🎮 5 игр');
+    }
+
+    const list = $('achievements-list');
+
+    if (!list) return;
+
+    if (!achievements.length) {
+        list.innerHTML = '<div class="achievement">Нет достижений</div>';
+        return;
+    }
+
+    list.innerHTML = achievements.map(a => `
+        <div class="achievement unlocked">${a}</div>
+    `).join('');
 }
 
 // ================= HELPERS =================
@@ -234,3 +285,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadLeaderboard();
     updateProfile();
 });
+
+document.getElementById('final-lines').innerText =
+    `Линий: ${e.detail.lines}`;
