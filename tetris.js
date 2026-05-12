@@ -24,7 +24,12 @@ class Tetris {
         this.currentX = 3;
         this.currentY = 0;
         
-        this.cellSize = 30;
+        this.cellSize = 20;
+        this.canvas.width = 200;
+        this.canvas.height = 400;
+
+        this.ctx.imageSmoothingEnabled = false;
+        this.lockDelay = false;
     }
     
     randomPiece() {
@@ -34,14 +39,17 @@ class Tetris {
     }
     
     spawnPiece() {
-        this.currentPiece = this.randomPiece();
-        this.currentX = Math.floor((10 - this.currentPiece[0].length) / 2);
-        this.currentY = 0;
-        
-        if (this.collision()) {
-            this.gameOver();
-        }
+    this.currentPiece = this.randomPiece();
+    this.currentX = Math.floor((10 - this.currentPiece[0].length) / 2);
+    this.currentY = 0;
+
+    // если сразу коллизия → стоп
+    if (this.collision()) {
+        this.gameOver();
+        return;
     }
+    this.draw();
+}
     
     collision() {
         for (let y = 0; y < this.currentPiece.length; y++) {
@@ -142,50 +150,37 @@ class Tetris {
     }
     
     draw() {
-        this.ctx.fillStyle = '#0a0a15';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Отрисовка сетки
-        const size = this.cellSize;
-        for (let y = 0; y < 20; y++) {
-            for (let x = 0; x < 10; x++) {
+    const size = this.cellSize;
+
+    this.ctx.fillStyle = '#0a0a15';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    for (let y = 0; y < 20; y++) {
+        for (let x = 0; x < 10; x++) {
 
             const px = x * size;
             const py = y * size;
 
-            if (this.grid[y][x]) {
-
-            this.ctx.fillStyle = '#00d9ff';
-            this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
-
-            this.ctx.fillStyle = '#00b4d8';
-            this.ctx.fillRect(px + 2, py + 2, size - 4, size - 4);
-
-        } else {
-
-            this.ctx.fillStyle = '#1a1a2e';
-            this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
-
+            this.ctx.fillStyle = this.grid[y][x] ? '#00b4d8' : '#141428';
+            this.ctx.fillRect(px, py, size, size);
         }
     }
-}
-        
-        // Отрисовка текущей фигуры
-        if (this.currentPiece) {
-            for (let y = 0; y < this.currentPiece.length; y++) {
-                for (let x = 0; x < this.currentPiece[y].length; x++) {
-                    if (this.currentPiece[y][x]) {
-                        const px = (this.currentX + x) * size;
-                        const py = (this.currentY + y) * size;
-                        this.ctx.fillStyle = '#ff006e';
-                        this.ctx.fillRect(px + 1, py + 1, 28, 28);
-                        this.ctx.fillStyle = '#fb6b9e';
-                        this.ctx.fillRect(px + 2, py + 2, 26, 26);
-                    }
+
+    if (this.currentPiece) {
+        for (let y = 0; y < this.currentPiece.length; y++) {
+            for (let x = 0; x < this.currentPiece[y].length; x++) {
+                if (this.currentPiece[y][x]) {
+
+                    const px = (this.currentX + x) * size;
+                    const py = (this.currentY + y) * size;
+
+                    this.ctx.fillStyle = '#ff006e';
+                    this.ctx.fillRect(px, py, size, size);
                 }
             }
         }
     }
+}
     
     gameOver() {
         this.isRunning = false;

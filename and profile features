@@ -1,0 +1,25 @@
+[33m6f7b620[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m fix: mobile ui, overlay, controls and profile features
+[33m99b8052[m fix: responsive tetris field and mobile layout
+[33m32723b3[m fix: responsive tetris field and mobile layout
+[33m84040ae[m feat: game over screen and best score saving
+[33mdae5cc8[m fix: исправлены ошибки и UI табов
+[33m32f02ae[m fix: исправлены ошибки и UI табов
+[33m24398dd[m fix tabs and game improvements
+[33m2231576[m update project
+[33m9d2451b[m added game overlays and fixed mobile layout
+[33m6d64fbb[m fix mobile layout
+[33m6571107[m fix mobile layout
+[33m07422ab[m update
+[33m70b538f[m fix duplicate HTML layout
+[33m4f0c5c5[m fix mobile layout and canvas
+[33m678e6ac[m improve mobile UI and text colors
+[33m86cd942[m responsive mobile canvas
+[33ma8205ed[m mobile optimization
+[33m6af7f05[m remove duplicate HTML and fix layout
+[33m7f230d4[m fix server + package.json
+[33m73af124[m fix server
+[33m86fb67f[m fix stable leaderboard
+[33m57b7bba[m resolve merge conflict
+[33m35fc635[m fix leaderboard rank
+[33m5ee62ab[m Add files via upload
+[33m015612e[m Initial commit

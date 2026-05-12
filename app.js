@@ -104,84 +104,34 @@ async function loadLeaderboard() {
 
 // ================= UI =================
 function initUI() {
+
     const startBtn = $('start-game-btn');
     const restartBtn = $('restart-game-btn');
 
-    const startOverlay = $('start-overlay');
-    const gameOverOverlay = $('game-over-overlay');
+    // ... твой код модалки ...
 
-    if (safe(startBtn)) {
-        startBtn.addEventListener('click', () => {
-            if (safe(startOverlay)) startOverlay.style.display = 'none';
-            startGame();
-        });
-    }
-
-    if (safe(restartBtn)) {
-        restartBtn.addEventListener('click', () => {
-            if (safe(gameOverOverlay)) gameOverOverlay.style.display = 'none';
-            startGame();
-        });
-    }
-    const editBtn = $('edit-name-btn');
-const modal = $('name-modal');
-
-const saveBtn = $('save-name-btn');
-const cancelBtn = $('cancel-name-btn');
-
-const input = $('new-name-input');
-
-if (editBtn && modal) {
-    editBtn.addEventListener('click', () => {
-        modal.style.display = 'flex';
-        input.value = currentUser.name;
-    });
-}
-
-if (cancelBtn && modal) {
-    cancelBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-}
-
-if (saveBtn && input && modal) {
-    saveBtn.addEventListener('click', () => {
-
-        const newName = input.value.trim();
-
-        if (!newName) return;
-
-        currentUser.name = newName;
-
-        saveUser();
-        updateProfile();
-
-        modal.style.display = 'none';
-    });
-}
-}
-
-    // tabs
+    // ================= TABS =================
     document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const tabId = btn.dataset.tab;
+        btn.addEventListener('click', () => {
+            const tabId = btn.dataset.tab;
 
-        document.querySelectorAll('.tab-btn')
-            .forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-btn')
+                .forEach(b => b.classList.remove('active'));
 
-        document.querySelectorAll('.tab-content')
-            .forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-content')
+                .forEach(c => c.classList.remove('active'));
 
-        btn.classList.add('active');
+            btn.classList.add('active');
 
-        const target = document.getElementById(tabId + '-tab');
-        if (target) target.classList.add('active');
+            const target = document.getElementById(tabId + '-tab');
+            if (target) target.classList.add('active');
 
-        if (tabId === 'rating') loadLeaderboard();
-        if (tabId === 'profile') updateProfile();
+            if (tabId === 'rating') loadLeaderboard();
+            if (tabId === 'profile') updateProfile();
+        });
     });
-});
-    // controls
+
+    // ================= CONTROLS =================
     document.querySelectorAll('.control-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             if (!tetrisGame?.isRunning) return;
@@ -195,10 +145,9 @@ if (saveBtn && input && modal) {
         });
     });
 
-    // keyboard
+    // ================= KEYBOARD =================
     document.addEventListener('keydown', (e) => {
-        if (!tetrisGame) return;
-        if (!tetrisGame.isRunning) return;
+        if (!tetrisGame?.isRunning) return;
 
         if (e.key === 'ArrowLeft') tetrisGame.moveLeft();
         if (e.key === 'ArrowRight') tetrisGame.moveRight();
@@ -210,6 +159,7 @@ if (saveBtn && input && modal) {
             tetrisGame.drop();
         }
     });
+}
 
 // ================= GAME EVENTS =================
 window.addEventListener('gameEnd', async (e) => {
@@ -256,37 +206,37 @@ function updateProfile() {
 
 function updateAchievements() {
 
-    if (!currentUser) return;
-
-    const achievements = [];
-
-    if (currentUser.bestScore >= 100) {
-        achievements.push('🏅 100 очков');
-    }
-
-    if (currentUser.bestScore >= 500) {
-        achievements.push('🔥 500 очков');
-    }
-
-    if (currentUser.bestScore >= 1000) {
-        achievements.push('👑 1000 очков');
-    }
-
-    if (currentUser.gamesPlayed >= 5) {
-        achievements.push('🎮 5 игр');
-    }
-
     const list = $('achievements-list');
 
     if (!list) return;
 
+    const achievements = [];
+
+    if (currentUser.bestScore >= 100)
+        achievements.push('🏅 100 очков');
+
+    if (currentUser.bestScore >= 500)
+        achievements.push('🔥 500 очков');
+
+    if (currentUser.bestScore >= 1000)
+        achievements.push('👑 1000 очков');
+
+    if (currentUser.gamesPlayed >= 5)
+        achievements.push('🎮 5 игр');
+
     if (!achievements.length) {
-        list.innerHTML = '<div class="achievement">Нет достижений</div>';
+        list.innerHTML = `
+            <div class="achievement">
+                Сыграйте первую игру 🎮
+            </div>
+        `;
         return;
     }
 
     list.innerHTML = achievements.map(a => `
-        <div class="achievement unlocked">${a}</div>
+        <div class="achievement unlocked">
+            ${a}
+        </div>
     `).join('');
 }
 
@@ -316,11 +266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     tetrisGame = new Tetris('tetris-canvas');
 
     initUI();
-    initGameEvents();
 
     await loadLeaderboard();
     updateProfile();
 });
-
-document.getElementById('final-lines').innerText =
-    `Линий: ${e.detail.lines}`;
