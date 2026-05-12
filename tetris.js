@@ -8,7 +8,7 @@ class Tetris {
         this.isRunning = false;
         this.gameInterval = null;
         
-        this.grid = Array(20).fill().map(() => Array(10).fill(0));
+        this.grid = Array(16).fill().map(() => Array(10).fill(0));
         
         this.pieces = {
             I: [[1,1,1,1]],
@@ -26,7 +26,7 @@ class Tetris {
         
         this.cellSize = 16;
         this.canvas.width = 160;
-        this.canvas.height = 320;
+        this.canvas.height = 256;
 
         this.ctx.imageSmoothingEnabled = false;
         this.lockDelay = false;
@@ -59,7 +59,7 @@ class Tetris {
                 const nx = this.currentX + x;
                 const ny = this.currentY + y;
                 
-                if (nx < 0 || nx >= 10 || ny >= 20) return true;
+                if (nx < 0 || nx >= 10 || ny >= 16) return true;
                 if (ny >= 0 && this.grid[ny][nx]) return true;
             }
         }
@@ -72,7 +72,7 @@ class Tetris {
                 if (this.currentPiece[y][x]) {
                     const ny = this.currentY + y;
                     const nx = this.currentX + x;
-                    if (ny >= 0 && ny < 20) {
+                    if (ny >= 0 && ny < 16) {
                         this.grid[ny][nx] = 1;
                     }
                 }
@@ -87,7 +87,7 @@ class Tetris {
     clearLines() {
         let linesRemoved = 0;
         
-        for (let y = 19; y >= 0; y--) {
+        for (let y = 15; y >= 0; y--) {
             if (this.grid[y].every(cell => cell === 1)) {
                 this.grid.splice(y, 1);
                 this.grid.unshift(Array(10).fill(0));
@@ -99,8 +99,7 @@ class Tetris {
         if (linesRemoved > 0) {
             this.linesCleared += linesRemoved;
             const points = [0, 100, 300, 500, 800];
-            const addScore = points[Math.min(linesRemoved, 4)];
-            this.score += addScore;
+            this.score += points[linesRemoved] || 0;
             document.getElementById('score').innerText = this.score;
         }
     }
@@ -155,14 +154,23 @@ class Tetris {
     this.ctx.fillStyle = '#0a0a15';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    for (let y = 0; y < 20; y++) {
+    for (let y = 0; y < 16; y++) {
         for (let x = 0; x < 10; x++) {
 
             const px = x * size;
             const py = y * size;
 
             this.ctx.fillStyle = this.grid[y][x] ? '#a855f7' : '#141428';
+            this.ctx.fillStyle = '#c084fc';
             this.ctx.fillRect(px, py, size, size);
+
+            // верхняя подсветка
+            this.ctx.fillStyle = '#e9d5ff';
+            this.ctx.fillRect(px, py, size, 2);
+
+            // нижняя тень
+            this.ctx.fillStyle = '#7c3aed';
+            this.ctx.fillRect(px, py + size - 2, size, 2);
         }
     }
 
@@ -175,7 +183,16 @@ class Tetris {
                     const py = (this.currentY + y) * size;
 
                     this.ctx.fillStyle = '#c084fc';
+                    this.ctx.fillStyle = '#c084fc';
                     this.ctx.fillRect(px, py, size, size);
+
+                    // верхняя подсветка
+                    this.ctx.fillStyle = '#e9d5ff';
+                    this.ctx.fillRect(px, py, size, 2);
+
+                    // нижняя тень
+                    this.ctx.fillStyle = '#7c3aed';
+                    this.ctx.fillRect(px, py + size - 2, size, 2);
                 }
             }
         }
@@ -185,7 +202,7 @@ class Tetris {
 this.ctx.strokeStyle = '#1f1f35';
 this.ctx.lineWidth = 1;
 
-for (let y = 0; y <= 20; y++) {
+for (let y = 0; y <= 16; y++) {
     this.ctx.beginPath();
     this.ctx.moveTo(0, y * size);
     this.ctx.lineTo(10 * size, y * size);
@@ -195,7 +212,7 @@ for (let y = 0; y <= 20; y++) {
 for (let x = 0; x <= 10; x++) {
     this.ctx.beginPath();
     this.ctx.moveTo(x * size, 0);
-    this.ctx.lineTo(x * size, 20 * size);
+    this.ctx.lineTo(x * size, 16 * size);
     this.ctx.stroke();
 }
 }
@@ -220,7 +237,7 @@ for (let x = 0; x <= 10; x++) {
         if (this.isRunning) return;
         
         // Сброс
-        this.grid = Array(20).fill().map(() => Array(10).fill(0));
+        this.grid = Array(16).fill().map(() => Array(10).fill(0));
         this.score = 0;
         this.linesCleared = 0;
         document.getElementById('score').innerText = '0';
