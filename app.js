@@ -108,7 +108,23 @@ function initUI() {
     const startBtn = $('start-game-btn');
     const restartBtn = $('restart-game-btn');
 
-    // ... твой код модалки ...
+    if (startBtn) {
+    startBtn.addEventListener('click', () => {
+        const overlay = $('start-overlay');
+        if (overlay) overlay.style.display = 'none';
+
+        startGame();
+    });
+}
+
+if (restartBtn) {
+    restartBtn.addEventListener('click', () => {
+        const overlay = $('game-over-overlay');
+        if (overlay) overlay.style.display = 'none';
+
+        startGame();
+    });
+}
 
     // ================= TABS =================
     document.querySelectorAll('.tab-btn').forEach(btn => {
