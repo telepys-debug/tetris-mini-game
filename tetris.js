@@ -146,27 +146,37 @@ class Tetris {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         // Отрисовка сетки
+        const size = this.cellSize;
         for (let y = 0; y < 20; y++) {
             for (let x = 0; x < 10; x++) {
-                if (this.grid[y][x]) {
-                    this.ctx.fillStyle = '#00d9ff';
-                    this.ctx.fillRect(x * 30 + 1, y * 30 + 1, 28, 28);
-                    this.ctx.fillStyle = '#00b4d8';
-                    this.ctx.fillRect(x * 30 + 2, y * 30 + 2, 26, 26);
-                } else {
-                    this.ctx.fillStyle = '#1a1a2e';
-                    this.ctx.fillRect(x * 30 + 1, y * 30 + 1, 28, 28);
-                }
-            }
+
+            const px = x * size;
+            const py = y * size;
+
+            if (this.grid[y][x]) {
+
+            this.ctx.fillStyle = '#00d9ff';
+            this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+
+            this.ctx.fillStyle = '#00b4d8';
+            this.ctx.fillRect(px + 2, py + 2, size - 4, size - 4);
+
+        } else {
+
+            this.ctx.fillStyle = '#1a1a2e';
+            this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+
         }
+    }
+}
         
         // Отрисовка текущей фигуры
         if (this.currentPiece) {
             for (let y = 0; y < this.currentPiece.length; y++) {
                 for (let x = 0; x < this.currentPiece[y].length; x++) {
                     if (this.currentPiece[y][x]) {
-                        const px = (this.currentX + x) * 30;
-                        const py = (this.currentY + y) * 30;
+                        const px = (this.currentX + x) * size;
+                        const py = (this.currentY + y) * size;
                         this.ctx.fillStyle = '#ff006e';
                         this.ctx.fillRect(px + 1, py + 1, 28, 28);
                         this.ctx.fillStyle = '#fb6b9e';

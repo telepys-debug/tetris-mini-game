@@ -94,6 +94,8 @@
       overflow-x: hidden;
       
       -webkit-overflow-scrolling: touch;
+
+      padding-bottom: 100px;
 }
     .tab-content.active {
       display: block;
@@ -170,18 +172,18 @@
     canvas {
       display: block;
 
-      width: 240px;
-      height: 480px;
-
+      width: min(90vw, 300px);
+      height: auto;
+      
       margin: 0 auto;
-
+      
       background: #0a0a15;
       border-radius: 16px;
-
+      
       box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
       
       touch-action: none;
-    }
+}
 
     .score-board {
       text-align: center;
@@ -359,27 +361,32 @@
 
 #game-tab {
   position: relative;
-  align-items: center;
+  text-align: center;
+
+  padding-bottom: 140px;
 }
 
 .game-overlay {
-  position: absolute;
+    position: absolute;
 
-  top: 96px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 
-  width: 240px;
-  height: 480px;
+    width: min(90vw, 300px);
+    height: min(calc(90vw * 2), 600px);
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  background: rgba(0,0,0,0.78);
+    background: rgba(0,0,0,0.78);
 
-  z-index: 50;
+    z-index: 50;
 
-  border-radius: 16px;
-  animation: fadeIn 0.2s ease;
+    border-radius: 16px;
+
+    animation: fadeIn 0.2s ease;
 }
 
 @keyframes fadeIn {
@@ -444,7 +451,7 @@
     Счёт: <span id="score">0</span>
   </div>
 
-  <canvas id="tetris-canvas" width="240" height="480"></canvas>
+  <canvas id="tetris-canvas" width="300" height="600"></canvas>
 
   <!-- START SCREEN -->
   <div id="start-overlay" class="game-overlay">
