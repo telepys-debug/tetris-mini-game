@@ -143,7 +143,7 @@ class Tetris {
     
     draw() {
         this.ctx.fillStyle = '#0a0a15';
-        this.ctx.fillRect(0, 0, 300, 600);
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         // Отрисовка сетки
         for (let y = 0; y < 20; y++) {
@@ -214,7 +214,4 @@ class Tetris {
         
         this.draw();
     }
-    function startGame() {
-        console.log('game started');
-        }
 }
