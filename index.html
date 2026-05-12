@@ -25,14 +25,11 @@
     .app {
       width: 100%;
       max-width: 520px;
-      min-height: 100dvh;
+      
+      min-height: 100vh;
+      
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
-      
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: calc(90px + env(safe-area-inset-bottom));
-
       background: #0f0f1a;
       margin: 0 auto;
 }
@@ -89,21 +86,18 @@
 
     /* Контенты */
     .tab-content {
-      flex: 1;
       display: none;
-      -webkit-overflow-scrolling: touch;
-
+      
+      padding: 12px;
+      
       overflow-y: auto;
       overflow-x: hidden;
-
-      padding: 12px;
-      padding-bottom: 12px;
-    }
-
+      
+      -webkit-overflow-scrolling: touch;
+}
     .tab-content.active {
-      display: flex;
-      flex-direction: column;
-    }
+      display: block;
+}
 
     /* Заголовки */
     .title {
@@ -198,18 +192,20 @@
     }
 
     .controls {
+      position: fixed;
+      
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%);
+      
       display: flex;
       justify-content: center;
       gap: 12px;
-      
-      margin-top: 10px;
+      flex-wrap: wrap;
       padding: 10px 0;
       
-      position: relative;
-      z-index: 20;
-      
-      flex-wrap: wrap;
-    }
+      z-index: 100;
+}
 
     .control-btn {
       background: #16213e;
@@ -383,6 +379,12 @@
   z-index: 50;
 
   border-radius: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .game-modal {
@@ -464,11 +466,10 @@
     <div class="game-modal">
       <h2>🏁 ИГРА ОКОНЧЕНА</h2>
 
-      <p>Ваш счёт:</p>
-
-      <div id="final-score" class="final-score">
-        0
-      </div>
+      <p>Ваш результат:</p>
+      <div id="final-score" class="final-score">0</div>
+      
+      <p id="final-lines"></p>
 
       <button id="restart-game-btn"
               class="start-btn">
