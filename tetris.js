@@ -214,4 +214,7 @@ class Tetris {
         
         this.draw();
     }
+    function startGame() {
+        console.log('game started');
+        }
 }

@@ -330,3 +330,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 });window.addEventListener('gameEnd', (e) => {
     console.log("GAME END EVENT:", e.detail);
 });
+const startOverlay = document.getElementById('start-overlay');
+const gameOverOverlay = document.getElementById('game-over-overlay');
+
+const startBtn = document.getElementById('start-game-btn');
+const restartBtn = document.getElementById('restart-game-btn');
+
+startBtn.addEventListener('click', () => {
+
+  startOverlay.style.display = 'none';
+
+  startGame();
+});
+
+restartBtn.addEventListener('click', () => {
+
+  gameOverOverlay.style.display = 'none';
+
+  startGame();
+});
