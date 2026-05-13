@@ -24,7 +24,7 @@ class Tetris {
         this.currentX = 3;
         this.currentY = 0;
         
-        this.cellSize = 20;
+        this.cellSize = 22;
     }
     
     randomPiece() {
@@ -177,9 +177,9 @@ class Tetris {
                     if (this.currentPiece[y][x]) {
                         const px = (this.currentX + x) * size;
                         const py = (this.currentY + y) * size;
-                        this.ctx.fillStyle = '#5b21b6';
+                        this.ctx.fillStyle = '#7b2cff';
                         this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
-                        this.ctx.fillStyle = '#8b5cf6';
+                        this.ctx.fillStyle = '#b07cff';
                         this.ctx.fillRect(px + 2, py + 2, size - 4, size - 4);
                     }
                 }
