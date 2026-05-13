@@ -24,12 +24,7 @@ class Tetris {
         this.currentX = 3;
         this.currentY = 0;
         
-        this.cellSize = 16;
-        this.canvas.width = 200;
-        this.canvas.height = 400;
-
-        this.ctx.imageSmoothingEnabled = false;
-        this.lockDelay = false;
+        this.cellSize = 30;
     }
     
     randomPiece() {
@@ -39,17 +34,14 @@ class Tetris {
     }
     
     spawnPiece() {
-    this.currentPiece = this.randomPiece();
-    this.currentX = Math.floor((10 - this.currentPiece[0].length) / 2);
-    this.currentY = 0;
-
-    // если сразу коллизия → стоп
-    if (this.collision()) {
-        this.gameOver();
-        return;
+        this.currentPiece = this.randomPiece();
+        this.currentX = Math.floor((10 - this.currentPiece[0].length) / 2);
+        this.currentY = 0;
+        
+        if (this.collision()) {
+            this.gameOver();
+        }
     }
-    this.draw();
-}
     
     collision() {
         for (let y = 0; y < this.currentPiece.length; y++) {
@@ -99,7 +91,8 @@ class Tetris {
         if (linesRemoved > 0) {
             this.linesCleared += linesRemoved;
             const points = [0, 100, 300, 500, 800];
-            this.score += points[linesRemoved] || 0;
+            const addScore = points[Math.min(linesRemoved, 4)];
+            this.score += addScore;
             document.getElementById('score').innerText = this.score;
         }
     }
@@ -149,49 +142,50 @@ class Tetris {
     }
     
     draw() {
-    if (!this.isRunning) return;
+        this.ctx.fillStyle = '#0a0a15';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Отрисовка сетки
         const size = this.cellSize;
-
-    // фон
-    this.ctx.fillStyle = '#0a0a15';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    // поле
-    for (let y = 0; y < 20; y++) {
-        for (let x = 0; x < 10; x++) {
+        for (let y = 0; y < 20; y++) {
+            for (let x = 0; x < 10; x++) {
 
             const px = x * size;
             const py = y * size;
 
             if (this.grid[y][x]) {
-                // блок
-                this.ctx.fillStyle = '#7c3aed';
-                this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
 
-            } else {
-                // пустая клетка (почти невидимая)
-                this.ctx.fillStyle = '#0f0f1a';
-                this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
-            }
+            this.ctx.fillStyle = '#00d9ff';
+            this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+
+            this.ctx.fillStyle = '#00b4d8';
+            this.ctx.fillRect(px + 2, py + 2, size - 4, size - 4);
+
+        } else {
+
+            this.ctx.fillStyle = '#1a1a2e';
+            this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+
         }
     }
-
-    // текущая фигура
-    if (this.currentPiece) {
-        for (let y = 0; y < this.currentPiece.length; y++) {
-            for (let x = 0; x < this.currentPiece[y].length; x++) {
-                if (this.currentPiece[y][x]) {
-
-                    const px = (this.currentX + x) * size;
-                    const py = (this.currentY + y) * size;
-
-                    this.ctx.fillStyle = '#a855f7';
-                    this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+}
+        
+        // Отрисовка текущей фигуры
+        if (this.currentPiece) {
+            for (let y = 0; y < this.currentPiece.length; y++) {
+                for (let x = 0; x < this.currentPiece[y].length; x++) {
+                    if (this.currentPiece[y][x]) {
+                        const px = (this.currentX + x) * size;
+                        const py = (this.currentY + y) * size;
+                        this.ctx.fillStyle = '#ff006e';
+                        this.ctx.fillRect(px + 1, py + 1, 28, 28);
+                        this.ctx.fillStyle = '#fb6b9e';
+                        this.ctx.fillRect(px + 2, py + 2, 26, 26);
+                    }
                 }
             }
         }
     }
-}
     
     gameOver() {
         this.isRunning = false;
@@ -199,8 +193,6 @@ class Tetris {
             clearInterval(this.gameInterval);
             this.gameInterval = null;
         }
-        this.currentPiece = null;
-        this.draw();
         
         const event = new CustomEvent('gameEnd', {
             detail: {
@@ -212,57 +204,24 @@ class Tetris {
     }
     
     start() {
-    this.stop(); // важно
-
-    this.grid = Array(20).fill().map(() => Array(10).fill(0));
-    this.score = 0;
-    this.linesCleared = 0;
-
-    document.getElementById('score').innerText = '0';
-
-    this.isRunning = true;
-    this.spawnPiece();
-
-    this.gameInterval = setInterval(() => {
-        if (this.isRunning) this.moveDown();
-    }, 400);
-
-    this.draw();
+        if (this.isRunning) return;
+        
+        // Сброс
+        this.grid = Array(20).fill().map(() => Array(10).fill(0));
+        this.score = 0;
+        this.linesCleared = 0;
+        document.getElementById('score').innerText = '0';
+        
+        this.spawnPiece();
+        this.isRunning = true;
+        
+        if (this.gameInterval) clearInterval(this.gameInterval);
+        this.gameInterval = setInterval(() => {
+            if (this.isRunning) {
+                this.moveDown();
+            }
+        }, 400);
+        
+        this.draw();
+    }
 }
-
-stop() {
-    this.isRunning = false;
-
-    if (this.gameInterval) {
-        clearInterval(this.gameInterval);
-        this.gameInterval = null;
-    }
-
-    this.currentPiece = null;
-
-    // очистка экрана
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-}
-// Добавьте этот метод в класс Tetris:
-
-drawEmpty() {
-    this.ctx.fillStyle = '#0a0a15';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    
-    // Рисуем сетку
-    const size = this.cellSize;
-    this.ctx.strokeStyle = '#1a1a2e';
-    this.ctx.lineWidth = 0.5;
-    for (let x = 0; x <= 10; x++) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(x * size, 0);
-        this.ctx.lineTo(x * size, this.canvas.height);
-        this.ctx.stroke();
-    }
-    for (let y = 0; y <= 20; y++) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(0, y * size);
-        this.ctx.lineTo(this.canvas.width, y * size);
-        this.ctx.stroke();
-    }
-}}
