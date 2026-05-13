@@ -232,9 +232,13 @@ class Tetris {
 
 stop() {
     this.isRunning = false;
+
     if (this.gameInterval) {
         clearInterval(this.gameInterval);
         this.gameInterval = null;
     }
+
+    this.currentPiece = null;
+    this.draw(); // очистка
 }
 }
