@@ -242,4 +242,27 @@ stop() {
 
     // очистка экрана
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
+// Добавьте этот метод в класс Tetris:
+
+drawEmpty() {
+    this.ctx.fillStyle = '#0a0a15';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Рисуем сетку
+    const size = this.cellSize;
+    this.ctx.strokeStyle = '#1a1a2e';
+    this.ctx.lineWidth = 0.5;
+    for (let x = 0; x <= 10; x++) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(x * size, 0);
+        this.ctx.lineTo(x * size, this.canvas.height);
+        this.ctx.stroke();
+    }
+    for (let y = 0; y <= 20; y++) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, y * size);
+        this.ctx.lineTo(this.canvas.width, y * size);
+        this.ctx.stroke();
+    }
 }}
