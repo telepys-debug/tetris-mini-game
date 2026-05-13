@@ -155,10 +155,10 @@ class Tetris {
 
             if (this.grid[y][x]) {
 
-            this.ctx.fillStyle = '#00d9ff';
+            this.ctx.fillStyle = '#7b2cff';
             this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
 
-            this.ctx.fillStyle = '#00b4d8';
+            this.ctx.fillStyle = '#a855f7';
             this.ctx.fillRect(px + 2, py + 2, size - 4, size - 4);
 
         } else {
@@ -177,9 +177,9 @@ class Tetris {
                     if (this.currentPiece[y][x]) {
                         const px = (this.currentX + x) * size;
                         const py = (this.currentY + y) * size;
-                        this.ctx.fillStyle = '#7b2cff';
-                        this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
                         this.ctx.fillStyle = '#b07cff';
+                        this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+                        this.ctx.fillStyle = '#d8b4fe';
                         this.ctx.fillRect(px + 2, py + 2, size - 4, size - 4);
                     }
                 }
