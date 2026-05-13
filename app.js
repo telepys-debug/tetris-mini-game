@@ -142,8 +142,13 @@ if (restartBtn) {
             const target = document.getElementById(tabId + '-tab');
             if (target) target.classList.add('active');
 
-            if (tabId === 'rating') loadLeaderboard();
-            if (tabId === 'profile') updateProfile();
+            if (tabId !== 'game' && tetrisGame) {
+    tetrisGame.isRunning = false;
+    if (tetrisGame.gameInterval) {
+        clearInterval(tetrisGame.gameInterval);
+        tetrisGame.gameInterval = null;
+        }
+    }
         });
     });
 

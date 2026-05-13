@@ -149,7 +149,8 @@ class Tetris {
     }
     
     draw() {
-    const size = this.cellSize;
+    if (!this.isRunning) return;
+        const size = this.cellSize;
 
     // фон
     this.ctx.fillStyle = '#0a0a15';
@@ -198,6 +199,8 @@ class Tetris {
             clearInterval(this.gameInterval);
             this.gameInterval = null;
         }
+        this.currentPiece = null;
+        this.draw();
         
         const event = new CustomEvent('gameEnd', {
             detail: {
@@ -209,24 +212,29 @@ class Tetris {
     }
     
     start() {
-        if (this.isRunning) return;
-        
-        // Сброс
-        this.grid = Array(20).fill().map(() => Array(10).fill(0));
-        this.score = 0;
-        this.linesCleared = 0;
-        document.getElementById('score').innerText = '0';
-        
-        this.spawnPiece();
-        this.isRunning = true;
-        
-        if (this.gameInterval) clearInterval(this.gameInterval);
-        this.gameInterval = setInterval(() => {
-            if (this.isRunning) {
-                this.moveDown();
-            }
-        }, 400);
-        
-        this.draw();
+    this.stop(); // важно
+
+    this.grid = Array(20).fill().map(() => Array(10).fill(0));
+    this.score = 0;
+    this.linesCleared = 0;
+
+    document.getElementById('score').innerText = '0';
+
+    this.isRunning = true;
+    this.spawnPiece();
+
+    this.gameInterval = setInterval(() => {
+        if (this.isRunning) this.moveDown();
+    }, 400);
+
+    this.draw();
+}
+
+stop() {
+    this.isRunning = false;
+    if (this.gameInterval) {
+        clearInterval(this.gameInterval);
+        this.gameInterval = null;
     }
+}
 }
