@@ -151,28 +151,31 @@ class Tetris {
     draw() {
     const size = this.cellSize;
 
+    // фон
     this.ctx.fillStyle = '#0a0a15';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+    // поле
     for (let y = 0; y < 20; y++) {
         for (let x = 0; x < 10; x++) {
 
             const px = x * size;
             const py = y * size;
 
-            this.ctx.fillStyle = this.grid[y][x] ? '#a855f7' : '#141428';
-            this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+            if (this.grid[y][x]) {
+                // блок
+                this.ctx.fillStyle = '#7c3aed';
+                this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
 
-            // верхняя подсветка
-            this.ctx.fillStyle = '#e9d5ff';
-            this.ctx.fillRect(px, py, size, 2);
-
-            // нижняя тень
-            this.ctx.fillStyle = '#7c3aed';
-            this.ctx.fillRect(px, py + size - 2, size, 2);
+            } else {
+                // пустая клетка (почти невидимая)
+                this.ctx.fillStyle = '#0f0f1a';
+                this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+            }
         }
     }
 
+    // текущая фигура
     if (this.currentPiece) {
         for (let y = 0; y < this.currentPiece.length; y++) {
             for (let x = 0; x < this.currentPiece[y].length; x++) {
@@ -181,38 +184,12 @@ class Tetris {
                     const px = (this.currentX + x) * size;
                     const py = (this.currentY + y) * size;
 
-                    this.ctx.fillStyle = '#c084fc';
+                    this.ctx.fillStyle = '#a855f7';
                     this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
-
-                    // верхняя подсветка
-                    this.ctx.fillStyle = '#e9d5ff';
-                    this.ctx.fillRect(px, py, size, 2);
-
-                    // нижняя тень
-                    this.ctx.fillStyle = '#7c3aed';
-                    this.ctx.fillRect(px, py + size - 2, size, 2);
                 }
             }
         }
-        
     }
-    // GRID LINES
-this.ctx.strokeStyle = '#1f1f35';
-this.ctx.lineWidth = 1;
-
-for (let y = 0; y <= 20; y++) {
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, y * size);
-    this.ctx.lineTo(10 * size, y * size);
-    this.ctx.stroke();
-}
-
-for (let x = 0; x <= 10; x++) {
-    this.ctx.beginPath();
-    this.ctx.moveTo(x * size, 0);
-    this.ctx.lineTo(x * size, 20 * size);
-    this.ctx.stroke();
-}
 }
     
     gameOver() {

@@ -13,14 +13,24 @@
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      background: #1a1a2e;
-      overflow-x: hidden;
-      overflow-y: auto;
-      touch-action: manipulation;
-      user-select: none;
-    }
+    margin: 0;
+    padding: 0;
+
+    background: #0a0a15;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+
+    overflow: hidden;
+
+    touch-action: manipulation;
+    user-select: none;
+
+    font-family: system-ui, sans-serif;
+}
 
     .app {
       width: 100%;
@@ -168,19 +178,23 @@
     }
 
     /* Игра */
+    
     canvas {
       display: block;
-      margin: 0 auto;
+
       width: 160px !important;
       height: 320px !important;
 
+      background: #111827;
+
+      border-radius: 18px;
+
       image-rendering: pixelated;
+
       touch-action: none;
-      
-      background: #0a0a15;
-      border-radius: 16px;
-      
-      box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
     .score-board {
@@ -189,6 +203,7 @@
       font-weight: bold;
       color: #00d9ff;
       margin: 8px 0;
+      margin-bottom: 14px;
     }
 
     .controls {
@@ -197,7 +212,7 @@
         left: 50%;
         transform: translateX(-50%);
 
-        bottom: 140px;
+        bottom: 120px;
 
         display: flex;
         justify-content: center;
@@ -360,7 +375,7 @@
   position: relative;
   text-align: center;
 
-  padding-bottom: 140px;
+  padding-bottom: 70px;
 }
 
 .game-overlay {
@@ -369,7 +384,7 @@
     left: 50%;
     transform: translateX(-50%);
 
-    top: 120px;
+    top: 95px;
 
     width: 200px;
     height: 400px;
