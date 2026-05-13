@@ -254,40 +254,45 @@ function updateProfile() {
     updateAchievements();
 }
 
-function updateAchievements() {
+const ACHIEVEMENTS = [
+    {
+        title: '🏅 100 очков',
+        desc: 'Набери 100 очков',
+        check: u => u.bestScore >= 100
+    },
+    {
+        title: '🔥 500 очков',
+        desc: 'Набери 500 очков',
+        check: u => u.bestScore >= 500
+    },
+    {
+        title: '👑 1000 очков',
+        desc: 'Набери 1000 очков',
+        check: u => u.bestScore >= 1000
+    },
+    {
+        title: '🎮 5 игр',
+        desc: 'Сыграй 5 игр',
+        check: u => u.gamesPlayed >= 5
+    }
+];
 
+function updateAchievements() {
     if (!currentUser) return;
 
-    const achievements = [];
-
-    if (currentUser.bestScore >= 100) {
-        achievements.push('🏅 100 очков');
-    }
-
-    if (currentUser.bestScore >= 500) {
-        achievements.push('🔥 500 очков');
-    }
-
-    if (currentUser.bestScore >= 1000) {
-        achievements.push('👑 1000 очков');
-    }
-
-    if (currentUser.gamesPlayed >= 5) {
-        achievements.push('🎮 5 игр');
-    }
-
     const list = $('achievements-list');
-
     if (!list) return;
 
-    if (!achievements.length) {
-        list.innerHTML = '<div class="achievement">Нет достижений</div>';
-        return;
-    }
+    list.innerHTML = ACHIEVEMENTS.map(a => {
+        const unlocked = a.check(currentUser);
 
-    list.innerHTML = achievements.map(a => `
-        <div class="achievement unlocked">${a}</div>
-    `).join('');
+        return `
+            <div class="achievement ${unlocked ? 'unlocked' : 'locked'}">
+                <div><b>${unlocked ? '✅' : '🔒'} ${a.title}</b></div>
+                <div style="font-size:12px; opacity:0.7">${a.desc}</div>
+            </div>
+        `;
+    }).join('');
 }
 
 // ================= HELPERS =================
