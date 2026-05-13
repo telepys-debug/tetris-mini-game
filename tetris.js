@@ -24,7 +24,7 @@ class Tetris {
         this.currentX = 3;
         this.currentY = 0;
         
-        this.cellSize = 30;
+        this.cellSize = 20;
     }
     
     randomPiece() {

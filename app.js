@@ -321,6 +321,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadLeaderboard();
     updateProfile();
 });
-
-document.getElementById('final-lines').innerText =
-    `Линий: ${e.detail.lines}`;
