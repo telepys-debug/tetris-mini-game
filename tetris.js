@@ -25,8 +25,8 @@ class Tetris {
         this.currentY = 0;
         
         this.cellSize = 16;
-        this.canvas.width = 160;
-        this.canvas.height = 320;
+        this.canvas.width = 200;
+        this.canvas.height = 400;
 
         this.ctx.imageSmoothingEnabled = false;
         this.lockDelay = false;
