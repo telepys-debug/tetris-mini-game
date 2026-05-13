@@ -177,10 +177,10 @@ class Tetris {
                     if (this.currentPiece[y][x]) {
                         const px = (this.currentX + x) * size;
                         const py = (this.currentY + y) * size;
-                        this.ctx.fillStyle = '#ff006e';
-                        this.ctx.fillRect(px + 1, py + 1, 28, 28);
-                        this.ctx.fillStyle = '#fb6b9e';
-                        this.ctx.fillRect(px + 2, py + 2, 26, 26);
+                        this.ctx.fillStyle = '#5b21b6';
+                        this.ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+                        this.ctx.fillStyle = '#8b5cf6';
+                        this.ctx.fillRect(px + 2, py + 2, size - 4, size - 4);
                     }
                 }
             }
