@@ -78,7 +78,9 @@ async function loadLeaderboard() {
     if (!safe(container)) return;
 
     try {
-        const res = await fetch(`${API_URL}/api/leaderboard`);
+        const res = await fetch(`${API_URL}/api/leaderboard?t=${Date.now()}`, {
+        cache: "no-store"
+        });
         const data = await res.json();
 
         if (!data.leaderboard?.length) {
