@@ -239,6 +239,7 @@ stop() {
     }
 
     this.currentPiece = null;
-    this.draw(); // очистка
-}
-}
+
+    // очистка экрана
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}}
