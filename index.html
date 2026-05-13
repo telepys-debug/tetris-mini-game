@@ -13,39 +13,24 @@
     }
 
     body {
-    margin: 0;
-    padding: 0;
-
-    background:
-        radial-gradient(circle at top, #111827 0%, #050816 70%);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    min-height: 100vh;
-
-    overflow: hidden;
-
-    touch-action: manipulation;
-    user-select: none;
-
-    font-family: system-ui, sans-serif;
-}
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at top, #111827 0%, #050816 70%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      touch-action: manipulation;
+    }
 
     .app {
-    width: 100%;
-    max-width: 520px;
-
-    min-height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-
-    background: transparent;
-
-    margin: 0 auto;
-}
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      background: transparent;
+      margin: 0 auto;
+      position: relative;
+    }
 
     /* Табы */
     .tabs {
@@ -53,21 +38,14 @@
       left: 50%;
       transform: translateX(-50%);
       bottom: 0;
-      
       width: 100%;
       max-width: 520px;
-      
       background: #16213e;
       display: flex;
       justify-content: space-around;
-      
       padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
-      
       border-top: 1px solid #0f3460;
       z-index: 100;
-      
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
     }
 
     .tab-btn {
@@ -85,35 +63,18 @@
       color: #00d9ff;
     }
 
-    .tab-btn img {
-      width: 28px;
-      display: block;
-      margin: 0 auto 4px;
-      opacity: 0.6;
-    }
-
-    .tab-btn.active img {
-      opacity: 1;
-    }
-
-    /* Контенты */
     .tab-content {
       display: none;
-      
       padding: 12px;
-      
-      overflow-y: auto;
-      overflow-x: hidden;
-      
-      -webkit-overflow-scrolling: touch;
-
       padding-bottom: 100px;
-}
+      min-height: 100vh;
+    }
+    
     .tab-content.active {
       display: block;
-}
+    }
 
-    /* Заголовки */
+    /* Рейтинг */
     .title {
       background: linear-gradient(135deg, #00b4d8, #0077b6);
       padding: 14px;
@@ -122,28 +83,6 @@
       font-weight: bold;
       color: white;
       margin-bottom: 20px;
-    }
-
-    /* Рейтинг */
-    .period-selector {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      gap: 10px;
-    }
-
-    .period-btn {
-      background: #16213e;
-      border: none;
-      padding: 10px;
-      border-radius: 16px;
-      color: white;
-      flex: 1;
-      cursor: pointer;
-    }
-
-    .period-btn.active {
-      background: #00b4d8;
     }
 
     .rating-list {
@@ -167,69 +106,50 @@
       color: white;
     }
 
-    .rating-rank {
-      font-weight: bold;
-      width: 40px;
-      color: #ffffff;
+    /* Игра - всё внутри этого блока */
+    #game-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .rating-name {
-      flex: 1;
-      text-align: left;
-      padding-left: 10px;
-      color: #e8f4ff;
+    .game-container {
+      position: relative;
+      width: 200px;
+      height: 400px;
+      margin: 20px auto;
     }
 
-    /* Игра */
-    
     canvas {
       display: block;
-      width: min(90vw, 220px);
-      height: auto;
-      aspect-ratio: 1 / 2;
-      
+      width: 200px;
+      height: 400px;
       background: #0b1020;
-
-      border-radius: 20px;
-
+      border-radius: 16px;
+      image-rendering: crisp-edges;
       image-rendering: pixelated;
-
-      touch-action: none;
-
-      box-shadow:
-        0 0 40px rgba(124, 58, 237, 0.18),
-        0 20px 60px rgba(0, 0, 0, 0.55);
-}
+      box-shadow: 0 0 40px rgba(124, 58, 237, 0.18);
+    }
 
     .score-board {
-    text-align: center;
-
-    font-size: 42px;
-    font-weight: 800;
-
-    color: #38bdf8;
-
-    margin-top: 12px;
-    margin-bottom: 22px;
-
-    text-shadow:
-        0 0 25px rgba(56, 189, 248, 0.35);
-}
+      text-align: center;
+      font-size: 42px;
+      font-weight: 800;
+      color: #38bdf8;
+      margin: 12px 0 22px;
+      text-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+    }
 
     .controls {
-        position: fixed;
-
-        left: 50%;
-        transform: translateX(-50%);
-
-        bottom: 120px;
-
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-
-        z-index: 90;
-}
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 120px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      z-index: 90;
+    }
 
     .control-btn {
       background: #16213e;
@@ -240,8 +160,6 @@
       font-size: 22px;
       cursor: pointer;
       color: white;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
     }
 
     .control-btn:active {
@@ -258,12 +176,42 @@
       font-weight: bold;
       font-size: 14px;
       cursor: pointer;
-      
       margin-top: 16px;
-      margin-bottom: 20px;
-      
-      position: relative;
-      z-index: 20;
+    }
+
+    .game-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.85);
+      border-radius: 16px;
+      z-index: 50;
+    }
+
+    .game-modal {
+      width: 85%;
+      background: #16213e;
+      border-radius: 24px;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .game-modal h2 {
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+
+    .final-score {
+      font-size: 28px;
+      font-weight: bold;
+      color: #00d9ff;
+      margin: 15px 0;
     }
 
     /* Профиль */
@@ -329,17 +277,6 @@
       color: white;
     }
 
-    .history-item {
-      background: #1d2b4a;
-      padding: 10px;
-      border-radius: 12px;
-      margin: 6px 0;
-      display: flex;
-      justify-content: space-between;
-      color: #dce9f5;
-    }
-
-    /* Модальное окно */
     .modal {
       display: none;
       position: fixed;
@@ -379,155 +316,59 @@
       border: none;
       cursor: pointer;
     }
-
-
-#game-tab {
-    position: relative;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    padding-top: 20px;
-    padding-bottom: 160px;
-
-    min-height: 100vh;
-}
-
-.game-overlay {
-    position: absolute;
-
-    left: 50%;
-    transform: translateX(-50%);
-
-    top: 95px;
-
-    width: 200px;
-    height: 400px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background: rgba(0,0,0,0.78);
-
-    border-radius: 16px;
-
-    z-index: 50;
-    animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.game-modal {
-  width: 85%;
-  max-width: 320px;
-
-  background: #16213e;
-
-  border-radius: 24px;
-
-  padding: 28px;
-
-  text-align: center;
-
-  color: white;
-
-  box-shadow: 0 0 30px rgba(0,0,0,0.4);
-}
-
-.game-modal h2 {
-  font-size: 18px;
-  margin-bottom: 14px;
-}
-
-.game-modal p {
-  margin-bottom: 20px;
-  color: #dce9f5;
-}
-
-.final-score {
-  font-size: 28px;
-  font-weight: bold;
-  color: #00d9ff;
-
-  margin-bottom: 20px;
-}
-
   </style>
 </head>
 <body>
 <div class="app">
+  
   <!-- Рейтинг -->
   <div id="rating-tab" class="tab-content active">
-  <div class="title">🏆 РЕЙТИНГ ИГРОКОВ</div>
-
-  <div id="my-rank" style="margin-bottom:10px; text-align:center;"></div>
-
-  <div class="period-selector" id="period-selector"></div>
-  <div id="rating-list" class="rating-list">Загрузка...</div>
-</div>
-
-  <!-- Игра -->
-<div id="game-tab" class="tab-content">
-
-  <div class="title">🎮 ПОСТРОЙ ИННОВАЦИИ</div>
-
-  <div class="score-board">
-    Счёт: <span id="score">0</span>
+    <div class="title">🏆 РЕЙТИНГ ИГРОКОВ</div>
+    <div id="rating-list" class="rating-list">Загрузка...</div>
   </div>
 
-  <canvas id="tetris-canvas" width="300" height="600"></canvas>
+  <!-- Игра - ВСЕ элементы игры только здесь -->
+  <div id="game-tab" class="tab-content">
+    <div class="title">🎮 ПОСТРОЙ ИННОВАЦИИ</div>
 
-  <!-- START SCREEN -->
-  <div id="start-overlay" class="game-overlay">
-    <div class="game-modal">
-      <h2>🎮 ТЕТРИС</h2>
-      <p>Построй инновации и набери максимум очков</p>
+    <div class="score-board">
+      Счёт: <span id="score">0</span>
+    </div>
 
-      <button id="start-game-btn" class="start-btn">
-        НАЧАТЬ ИГРУ
-      </button>
+    <div class="game-container">
+      <canvas id="tetris-canvas" width="200" height="400"></canvas>
+
+      <div id="start-overlay" class="game-overlay">
+        <div class="game-modal">
+          <h2>🎮 ТЕТРИС</h2>
+          <p>Построй инновации и набери максимум очков</p>
+          <button id="start-game-btn" class="start-btn">НАЧАТЬ ИГРУ</button>
+        </div>
+      </div>
+
+      <div id="game-over-overlay" class="game-overlay" style="display:none;">
+        <div class="game-modal">
+          <h2>🏁 ИГРА ОКОНЧЕНА</h2>
+          <p>Ваш результат:</p>
+          <div id="final-score" class="final-score">0</div>
+          <p id="final-lines"></p>
+          <button id="restart-game-btn" class="start-btn">НОВАЯ ИГРА</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="control-btn" data-move="left">◀</button>
+      <button class="control-btn" data-move="rotate">🔄</button>
+      <button class="control-btn" data-move="down">▼</button>
+      <button class="control-btn" data-move="right">▶</button>
     </div>
   </div>
-
-  <!-- GAME OVER -->
-  <div id="game-over-overlay"
-       class="game-overlay"
-       style="display:none;">
-
-    <div class="game-modal">
-      <h2>🏁ИГРА ОКОНЧЕНА</h2>
-
-      <p>Ваш результат:</p>
-      <div id="final-score" class="final-score">0</div>
-      
-      <p id="final-lines"></p>
-
-      <button id="restart-game-btn"
-              class="start-btn">
-        НОВАЯ ИГРА
-      </button>
-    </div>
-  </div>
-
-  <!-- CONTROLS -->
-  <div class="controls">
-    <button class="control-btn" data-move="left">◀</button>
-    <button class="control-btn" data-move="rotate">🔄</button>
-    <button class="control-btn" data-move="down">▼</button>
-    <button class="control-btn" data-move="right">▶</button>
-  </div>
-
-</div>
 
   <!-- Профиль -->
   <div id="profile-tab" class="tab-content">
     <div class="profile-header">
-      <div class="avatar" id="avatar">👤</div>
+      <div class="avatar">👤</div>
       <h2 id="user-name">Игрок</h2>
       <button class="edit-name-btn" id="edit-name-btn">✏️ Сменить имя</button>
     </div>
@@ -538,38 +379,25 @@
     </div>
     <div class="title" style="font-size: 14px;">🏅 ДОСТИЖЕНИЯ</div>
     <div id="achievements-list"></div>
-    <div class="title" style="font-size: 14px;">📅 ИСТОРИЯ МЕСТ</div>
-    <div id="history-list"></div>
   </div>
 
   <!-- Нижнее меню -->
   <div class="tabs">
-    <button class="tab-btn" data-tab="rating">🏆<br>Рейтинг</button>
+    <button class="tab-btn active" data-tab="rating">🏆<br>Рейтинг</button>
     <button class="tab-btn" data-tab="game">🎮<br>Игра</button>
     <button class="tab-btn" data-tab="profile">👤<br>Профиль</button>
   </div>
 
-<!-- Модальное окно смены имени -->
-<div id="name-modal" class="modal">
-  <div class="modal-content">
-    <h3>Сменить имя</h3>
-    <input type="text" id="new-name-input" maxlength="20" placeholder="Введите имя">
-    <button id="save-name-btn">Сохранить</button>
-    <button id="cancel-name-btn">Отмена</button>
+  <!-- Модальное окно -->
+  <div id="name-modal" class="modal">
+    <div class="modal-content">
+      <h3>Сменить имя</h3>
+      <input type="text" id="new-name-input" maxlength="20" placeholder="Введите имя">
+      <button id="save-name-btn">Сохранить</button>
+      <button id="cancel-name-btn">Отмена</button>
+    </div>
   </div>
 </div>
-
-<script>
-document.addEventListener(
-  'touchmove',
-  function(e) {
-    if (e.scale !== 1) {
-      e.preventDefault();
-    }
-  },
-  { passive: false }
-);
-</script>
 
 <script src="tetris.js"></script>
 <script src="app.js"></script>
