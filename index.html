@@ -18,15 +18,16 @@
       background: #1a1a2e;
       overflow-x: hidden;
       overflow-y: auto;
-      touch-action: manipulation;
-      user-select: none;
+      min-height: 100vh;
+      touch-action: pan-y;
+      -webkit-overflow-scrolling: touch;
     }
 
     .app {
       width: 100%;
       max-width: 520px;
       
-      min-height: 100vh;
+      min-height: 100dvh;
       
       display: flex;
       flex-direction: column;
@@ -92,6 +93,8 @@
       
       overflow-y: auto;
       overflow-x: hidden;
+
+      max-height: calc(100dvh - 90px);
       
       -webkit-overflow-scrolling: touch;
 
