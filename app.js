@@ -102,6 +102,61 @@ async function loadLeaderboard() {
         container.innerHTML = 'Ошибка загрузки';
     }
 }
+async function loadHistory() {
+
+    if (!currentUser) return;
+
+    const list = $('history-list');
+
+    if (!list) return;
+
+    try {
+
+        const res = await fetch(
+            `${API_URL}/api/user-history/${currentUser.id}`
+        );
+
+        const data = await res.json();
+
+        if (!data.length) {
+            list.innerHTML =
+                '<div class="history-item">История пуста</div>';
+            return;
+        }
+
+        const sorted = data.sort(
+            (a, b) => b.score - a.score
+        );
+
+        list.innerHTML = sorted.map((item, index) => {
+
+            let medal = '';
+
+            if (index === 0) medal = '🥇';
+            else if (index === 1) medal = '🥈';
+            else if (index === 2) medal = '🥉';
+
+            return `
+                <div class="history-item">
+                    <div>
+                        ${medal} ${item.period}
+                    </div>
+
+                    <div>
+                        ${item.score}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+    } catch (e) {
+
+        console.error('HISTORY ERROR:', e);
+
+        list.innerHTML =
+            '<div class="history-item">Ошибка загрузки</div>';
+    }
+}
 
 // ================= UI =================
 function initUI() {
@@ -179,7 +234,10 @@ if (saveBtn && input && modal) {
         if (target) target.classList.add('active');
 
         if (tabId === 'rating') loadLeaderboard();
-        if (tabId === 'profile') updateProfile();
+        if (tabId === 'profile') {
+            updateProfile();
+            loadHistory();
+        }
     });
 });
     // controls
@@ -225,6 +283,7 @@ window.addEventListener('gameEnd', async (e) => {
     // обновить UI
     await loadLeaderboard();
     updateProfile();
+    loadHistory();
 
     // показать game over
     const overlay = $('game-over-overlay');
