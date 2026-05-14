@@ -54,11 +54,10 @@ async function sendScore(score, lines) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                userId: currentUser.id,
-                name: currentUser.name,
-                score,
-                lines,
-                period: getCurrentPeriod()
+            userId: currentUser.id,
+            name: currentUser.name,
+            score,
+            lines
             })
         });
 
